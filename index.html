@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="เกมการศึกษา ผจญภัยอาณาจักรพยัญชนะไทย สำหรับเด็กอนุบาล 3 (อายุ 5-6 ปี) ภาพการ์ตูนน่ารัก สีสันสดใส ปุ่มใหญ่ เล่นง่าย พร้อมเสียงอ่าน">
+  <meta name="theme-color" content="#FF7043">
+  <title>ผจญภัยอาณาจักรพยัญชนะไทย - เกมการศึกษาอนุบาล 3</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏰</text></svg>">
+</head>
+<body>
+
+  <!-- แบ็กกราวด์เมฆการ์ตูนลอย -->
+  <div class="background-decorations" aria-hidden="true">
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+  </div>
+
+  <!-- เอฟเฟกต์กระดาษสายรุ้งฉลองชัยชนะ -->
+  <div id="confetti-container" aria-hidden="true"></div>
+
+  <!-- คอนเทนเนอร์หลัก -->
+  <main class="app-container">
+
+    <!-- ==========================================
+         1. หน้าเริ่มต้น (Start Screen)
+         ========================================== -->
+    <section id="start-screen" class="screen active" aria-label="หน้าเริ่มต้นเข้าสู่เกม">
+      <div class="welcome-card">
+        
+        <!-- ไอคอนปราสาทการ์ตูน -->
+        <svg class="castle-hero-icon" viewBox="0 0 100 100" role="img" aria-label="ปราสาทพยัญชนะ">
+          <defs>
+            <linearGradient id="castleWall" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#FFE082"/>
+              <stop offset="100%" stop-color="#FFB300"/>
+            </linearGradient>
+            <linearGradient id="roofGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#FF5252"/>
+              <stop offset="100%" stop-color="#C62828"/>
+            </linearGradient>
+          </defs>
+          <rect x="25" y="45" width="50" height="45" rx="4" fill="url(#castleWall)"/>
+          <rect x="15" y="35" width="20" height="55" rx="3" fill="url(#castleWall)"/>
+          <rect x="65" y="35" width="20" height="55" rx="3" fill="url(#castleWall)"/>
+          <!-- หลังคายอดแหลม -->
+          <polygon points="25,15 12,35 38,35" fill="url(#roofGrad)"/>
+          <polygon points="75,15 62,35 88,35" fill="url(#roofGrad)"/>
+          <polygon points="50,22 35,45 65,45" fill="url(#roofGrad)"/>
+          <!-- ประตูโค้งมน -->
+          <path d="M42 90 L42 65 Q50 55 58 65 L58 90 Z" fill="#5D4037"/>
+          <!-- ดาวประกายบนปราสาท -->
+          <circle cx="50" cy="12" r="5" fill="#FFD700"/>
+        </svg>
+
+        <h1 class="game-title">ผจญภัยอาณาจักร<br>พยัญชนะไทย</h1>
+        <p class="game-subtitle">🌟 เดินทาง 10 ด่าน สะสมดาว และปลดล็อกปราสาทแสนสนุก 🏰</p>
+
+        <!-- เลือกตัวละคร -->
+        <div class="avatar-selection-wrapper">
+          <label class="section-label">เลือกนักผจญภัยตัวน้อย:</label>
+          <div class="avatar-options">
+            <button type="button" class="avatar-btn selected" data-avatar="boy" id="avatar-boy" aria-label="เลือกตัวละครเด็กชาย">
+              <span class="avatar-emoji">👦🎒</span>
+              <span>เด็กชายผู้กล้า</span>
+            </button>
+            <button type="button" class="avatar-btn" data-avatar="girl" id="avatar-girl" aria-label="เลือกตัวละครเด็กหญิง">
+              <span class="avatar-emoji">👧🎒</span>
+              <span>เด็กหญิงผู้กล้า</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- กรอกชื่อเล่น -->
+        <div class="input-group">
+          <label for="player-nickname" class="section-label">พิมพ์ชื่อเล่นของหนู:</label>
+          <input type="text" id="player-nickname" class="child-name-input" placeholder="เช่น น้องกานต์" maxlength="15" autocomplete="off">
+        </div>
+
+        <!-- ปุ่มเริ่มเกมขนาดใหญ่ -->
+        <button type="button" id="btn-start" class="btn-primary-big">
+          <span class="btn-icon">🚀</span>
+          <span>เริ่มผจญภัยเลย!</span>
+        </button>
+
+        <!-- ปุ่มตั้งค่า Google Sheets สำหรับคุณครู/ผู้ปกครอง -->
+        <button type="button" id="btn-settings" class="btn-settings-gear">
+          <span>⚙️ ตั้งค่า Google Sheets (สำหรับคุณครู)</span>
+        </button>
+
+      </div>
+    </section>
+
+
+    <!-- ==========================================
+         2. หน้าเล่นเกม (Game Screen)
+         ========================================== -->
+    <section id="game-screen" class="screen" aria-label="หน้าเล่นเกมผจญภัย">
+      
+      <!-- แถบด้านบน: ด่าน, ดาว, ปุ่มเสียง -->
+      <header class="game-top-bar">
+        <div class="top-bar-left">
+          <span id="current-stage-label" class="badge-stage">ด่านที่ 1 / 10</span>
+          <span class="badge-stars">
+            <span>⭐</span>
+            <span id="star-counter-text">0 / 10</span>
+          </span>
+        </div>
+        <div class="top-bar-right">
+          <button type="button" id="btn-read-question" class="btn-sound-read" title="กดเพื่อให้คอมพิวเตอร์อ่านโจทย์ให้ฟัง">
+            <span>🔊 อ่านโจทย์</span>
+          </button>
+          <button type="button" id="btn-sound-toggle" class="mini-control-btn" title="เปิด/ปิดเสียงเอฟเฟกต์">
+            🔔 เสียง: เปิด
+          </button>
+          <button type="button" id="btn-bgm-toggle" class="mini-control-btn muted" title="เปิด/ปิดดนตรีเบาๆ">
+            🎵 เพลง: ปิด
+          </button>
+        </div>
+      </header>
+
+      <!-- แถบผจญภัยก้าวข้ามหิน 10 จุดสู่ปราสาทพยัญชนะ -->
+      <div class="adventure-map-wrapper" aria-label="แผนที่ความก้าวหน้าการเดินทาง">
+        <div class="map-line"></div>
+        <div id="map-avatar" class="map-avatar-marker" style="left: 0%;">👦🎒</div>
+        <div id="map-path-container" class="map-track">
+          <!-- สร้างหิน 10 จุดด้วย JavaScript -->
+        </div>
+        <div class="map-castle-goal" title="ปราสาทพยัญชนะ">🏰</div>
+      </div>
+
+      <!-- กล่องคำถามหลัก -->
+      <article class="question-card">
+        <div class="question-header">
+          <h2 id="question-text" class="question-title">ไก่ อ่านขึ้นต้นด้วยพยัญชนะใด?</h2>
+          <span id="target-word-badge" class="target-badge">คำว่า "ไก่"</span>
+        </div>
+
+        <!-- กรอบรูปภาพการ์ตูนเวกเตอร์ SVG -->
+        <div id="illustration-container" class="illustration-box" aria-live="polite">
+          <!-- ใส่ SVG จาก questions.js -->
+        </div>
+
+        <!-- ตัวเลือก 3 ข้อขนาดใหญ่พิเศษ -->
+        <div id="choices-container" class="choices-grid" role="group" aria-label="ตัวเลือกพยัญชนะ 3 ข้อ">
+          <!-- ปุ่มตัวเลือกสร้างด้วย JavaScript -->
+        </div>
+      </article>
+
+    </section>
+
+
+    <!-- ==========================================
+         3. หน้าสรุปผล & เกียรติบัตร (End Screen)
+         ========================================== -->
+    <section id="end-screen" class="screen" aria-label="หน้าสรุปผลการเล่นและรับเกียรติบัตร">
+      <div class="victory-card">
+        
+        <div class="castle-unlocked-banner">
+          <span>🏰 ปลดล็อกปราสาทพยัญชนะสำเร็จแล้ว! 🌟</span>
+        </div>
+
+        <h1 class="cert-title">เกียรติบัตรยอดผู้กล้าพยัญชนะไทย</h1>
+        <h2 id="end-player-name" class="cert-player-name">ยินดีด้วย น้องกานต์ ผู้กล้าน้อย!</h2>
+
+        <!-- สรุปผลคะแนนและดาว -->
+        <div class="score-summary-grid">
+          <div class="summary-tile primary">
+            <span class="tile-label">คะแนนรวม</span>
+            <span id="end-score-text" class="tile-value">10 / 10</span>
+          </div>
+          <div class="summary-tile secondary">
+            <span class="tile-label">ตอบผิดและแก้ไขจนถูก</span>
+            <span id="end-wrong-count" class="tile-value gold">0 ครั้ง</span>
+          </div>
+        </div>
+
+        <!-- ดาว 10 ดวงเรียงแถว -->
+        <div id="end-stars-container" class="stars-display-row" aria-label="ดาวทั้งหมดที่สะสมได้">
+          <!-- สร้างดาว 10 ดวงด้วย JS -->
+        </div>
+
+        <!-- แถบประเมินผลระดับความสามารถ -->
+        <div id="end-evaluation-text" class="evaluation-banner">
+          ยอดเยี่ยมมาก ระดับเหรียญทองคำขาว 🌟
+        </div>
+
+        <!-- สถานะการบันทึก Google Sheets -->
+        <div id="sheets-status-badge" class="status-badge saving">
+          กำลังบันทึกคะแนนลง Google Sheets... ⏳
+        </div>
+
+        <!-- ปุ่มควบคุม -->
+        <div class="end-actions">
+          <button type="button" id="btn-play-again" class="btn-primary-big">
+            <span class="btn-icon">🔄</span>
+            <span>เล่นอีกครั้ง</span>
+          </button>
+          <button type="button" id="btn-print-cert" class="btn-secondary">
+            <span>🖨️ พิมพ์เกียรติบัตร</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- ==========================================
+       ป๊อปอัปคำชมเมื่อตอบถูก (Praise Overlay)
+       ========================================== -->
+  <aside id="praise-overlay" class="overlay-modal" role="dialog" aria-modal="true" aria-label="คำชมเมื่อตอบถูก">
+    <div class="praise-card">
+      <div class="praise-icon">⭐🎉</div>
+      <h3 id="praise-text" class="praise-title">เก่งมากเลยคนดี!</h3>
+      <p style="color: #66BB6A; font-size: 1.2rem; font-weight: 600;">+1 ดาวสะสมมุ่งสู่ปราสาท ✨</p>
+    </div>
+  </aside>
+
+  <!-- ==========================================
+       ป๊อปอัปคำใบ้เมื่อตอบผิด (Hint Overlay)
+       ========================================== -->
+  <aside id="hint-overlay" class="overlay-modal" role="dialog" aria-modal="true" aria-label="คำใบ้ช่วยจำ">
+    <div class="hint-card">
+      <div class="hint-icon">💡🐰</div>
+      <h3 class="hint-heading">ไม่เป็นไรนะจ๊ะ ลองใหม่อีกครั้ง!</h3>
+      <p id="hint-text" class="hint-msg">ลองฟังเสียงดูนะจ๊ะ ไก่ ขึ้นต้นด้วยเสียงอะไรเอ่ย?</p>
+      <button type="button" id="btn-hint-close" class="btn-retry-hint">
+        <span>ลองตอบอีกครั้ง 👆</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ==========================================
+       หน้าต่างตั้งค่าคุณครู (Settings Modal)
+       ========================================== -->
+  <aside id="settings-modal" class="overlay-modal" role="dialog" aria-modal="true" aria-label="การตั้งค่าระบบและ Google Sheets">
+    <div class="settings-box">
+      <div class="settings-header">
+        <h3 class="settings-title">⚙️ ตั้งค่าเชื่อมต่อ Google Sheets</h3>
+        <button type="button" id="btn-settings-close" class="btn-icon-close" aria-label="ปิดหน้าต่าง">&times;</button>
+      </div>
+
+      <div class="settings-info-box">
+        <p><strong>Google Sheets ID:</strong> <code>15IYfST5tLsyXD42vD8zrdovX0QYYYCcSuTPihUWiEMQ</code></p>
+        <p style="margin-top: 4px;">ระบบจะสร้างชีต <strong>Questions</strong> และ <strong>Results</strong> ให้อัตโนมัติเมื่อติดตั้ง Apps Script สำเร็จ</p>
+      </div>
+
+      <div class="settings-field">
+        <label for="settings-script-url" class="field-label">Google Apps Script Web App URL:</label>
+        <input type="url" id="settings-script-url" class="field-input" placeholder="https://script.google.com/macros/s/.../exec">
+        <small style="color: #78909C;">(URL ที่ได้หลังจากการ Deploy Web App ใน Google Apps Script)</small>
+      </div>
+
+      <div class="settings-buttons-row">
+        <button type="button" id="btn-test-connection" class="mini-control-btn">
+          🔍 ทดสอบการเชื่อมต่อ
+        </button>
+        <button type="button" id="btn-save-settings" class="mini-control-btn" style="background: #4CAF50; color: #FFF; border-color: #388E3C;">
+          💾 บันทึกการตั้งค่า
+        </button>
+      </div>
+
+      <div id="connection-status" class="status-indicator"></div>
+
+      <hr style="border: 0; border-top: 1px solid #ECEFF1; margin: 8px 0;">
+
+      <div class="settings-field">
+        <label class="field-label">📋 ประวัติคะแนนนักเรียนล่าสุดที่เล่นในเครื่องนี้ (Offline Backup):</label>
+        <div class="local-table-wrapper">
+          <table class="results-table">
+            <thead>
+              <tr>
+                <th>วันเวลา</th>
+                <th>ชื่อนักเรียน</th>
+                <th>คะแนน</th>
+                <th>ดาว</th>
+                <th>ตอบผิด</th>
+              </tr>
+            </thead>
+            <tbody id="local-results-tbody">
+              <!-- ข้อมูลประวัติจาก JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- สคริปต์การทำงาน -->
+  <script src="js/config.js"></script>
+  <script src="js/questions.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
